@@ -36,7 +36,7 @@ class Game(object):
         player.field = Field(Game.field_size)
         player.enemy_ships = list(Game.ships_rules)
         self.ships_setup(player)
-        player.field.recalculate_weight_map(player.enemy_ships)
+        player.field.recalculate_weights(player.enemy_ships)
         self.players.append(player)
 
     def ships_setup(self, player):
@@ -56,7 +56,7 @@ class Game(object):
 
                 player.message.clear()
 
-                x, y, r = player.get_input('ship_setup')
+                x, y, r = player.process('ship_setup')
                 if x + y + r == 0:
                     continue
 

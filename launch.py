@@ -16,10 +16,10 @@ if __name__ == '__main__':
 
         if game.status == 'in_game':
             Game.clear_screen()
-            game.current_player.message.append("Ждём приказа, капитан {}. Выстрел по: ".format(game.current_player.name))
+            game.current_player.message.append("Ждём приказа, капитан {}.".format(game.current_player.name))
             game.draw()
             game.current_player.message.clear()
-            shot_result = game.current_player.make_shot(game.next_player)
+            shot_result = game.current_player.shot(game.next_player)
             if shot_result == 'miss':
                 game.next_player.message.append('На этот раз {}, промахнулся! '.format(game.current_player.name))
                 game.next_player.message.append('Ваш ход {}!'.format(game.next_player.name))

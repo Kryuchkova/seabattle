@@ -2,7 +2,7 @@ from engine.environment.cell_package.cell import Cell
 from engine.environment.part_package.part import FieldPart
 from engine.ship_package.ship import Ship
 
-DELTA = 50
+DELTA = 20
 
 
 class Field(object):
@@ -22,7 +22,7 @@ class Field(object):
 
     def draw_field(self, element):
         field = self.get_field_part(element)
-        weights = self.get_max_weight_cells()
+        weights = self.get_max_weights()
 
         if element == FieldPart.weight:
             for x in range(self.size):
@@ -107,7 +107,7 @@ class Field(object):
             for p_y in range(y, y + width):
                 field[p_x][p_y] = ship
 
-    def get_max_weight_cells(self):
+    def get_max_weights(self):
         weights = {}
         max_weight = 0
         for x in range(self.size):
@@ -118,7 +118,7 @@ class Field(object):
 
         return weights[max_weight]
 
-    def recalculate_weight_map(self, available_ships):
+    def recalculate_weights(self, available_ships):
         self.weight = [[1 for _ in range(self.size)] for _ in range(self.size)]
 
         for x in range(self.size):

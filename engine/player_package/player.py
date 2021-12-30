@@ -19,7 +19,7 @@ class Player(object):
         self.field = None
 
 
-    def get_input(self, input_type):
+    def process(self, input_type):
         if input_type == "ship_setup":
             if self.is_ai or self.auto_ship_setup:
                 user_input = str(choice(Game.letters)) + str(randrange(0, self.field.size)) + choice(["Г", "В"])
@@ -42,7 +42,7 @@ class Player(object):
 
             if self.is_ai:
                 if self.skill == 1:
-                    x, y = choice(self.field.get_max_weight_cells())
+                    x, y = choice(self.field.get_max_weights())
                 if self.skill == 0:
                     x, y = randrange(0, self.field.size), randrange(0, self.field.size)
             else:
@@ -55,12 +55,12 @@ class Player(object):
                 y = int(y) - 1
             return x, y
 
-    def make_shot(self, target_player):
-        sx, sy = self.get_input('shot')
+    def shot(self, target_player):
+        sx, sy = self.process('shot')
         if sx + sy == 500 or self.field.radar[sx][sy] != Cell.empty_cell:
             return 'retry'
 
-        shot_res = target_player.receive_shot((sx, sy))
+        shot_res = target_player.result_of_shot((sx, sy))
 
         if shot_res == 'miss':
             self.field.radar[sx][sy] = Cell.miss_cell
@@ -74,11 +74,11 @@ class Player(object):
             self.enemy_ships.remove(destroyed_ship.size)
             shot_res = 'kill'
 
-        self.field.recalculate_weight_map(self.enemy_ships)
+        self.field.recalculate_weights(self.enemy_ships)
 
         return shot_res
 
-    def receive_shot(self, shot):
+    def result_of_shot(self, shot):
         sx, sy = shot
 
         if type(self.field.map[sx][sy]) == Ship:
